@@ -1,6 +1,7 @@
 from engine import RecommendationService, TwitterService
 from flask import Flask, request, jsonify
 from models import Tweet, Book
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -11,16 +12,24 @@ def index():
 def get_book_recommendation():
 	twitter_handle = _getParameter('twitterHandle')
 	if twitter_handle is None:
-		return _error("Missing required parameter: twitterHandle")
+		return json_error("Missing required parameter: twitterHandle")
 
-	# TODO: Try/Catch
-	twitter_service = TwitterService(twitter_handle)
-	tweets = twitter_service.retrieve_tweets()
+	try:
+		twitter_service = TwitterService(twitter_handle)
+		tweets = twitter_service.retrieve_tweets()
 
-	reco_service = RecommendationService()
-	recommendation = reco_service.recommend_book_by_tweets(tweets)
+		reco_service = RecommendationService()
+		recommendation = reco_service.recommend_book_by_tweets(tweets)
+	except:
+		return json_error("Unexpected error: %s" % sys.exc_info()[0])
 
-	return jsonify(recommendation.__dict__)
+	return json_success(recommendation.__dict__)
+
+def json_success(message):
+	return jsonify(message)
+
+def json_error(message):
+	return jsonify(error=message)
 
 def _getParameter(parameter):
 	if parameter in request.form:
@@ -29,12 +38,6 @@ def _getParameter(parameter):
 		return request.args[parameter]
 
 	return None
-
-def _success(message):
-	return jsonify(success=message)
-
-def _error(message):
-	return jsonify(error=message)
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True)
