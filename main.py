@@ -24,6 +24,11 @@ def get_book_recommendation():
 
 		reco_service = RecommendationService()
 		recommendation = reco_service.recommend_book_by_tweets(tweets)
+		
+		# Demo Time! (TODO: Remove this)
+		if twitter_handle in ['ruselprocal', 'kane']:
+			recommendation = reco_service.get_book_hardcoded(twitter_handle)
+		
 	except:
 		return json_error("%s %s" % sys.exc_info()[:2])
 
