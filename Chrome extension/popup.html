@@ -6,15 +6,20 @@
       body {
         min-width: 357px;
         overflow-x: hidden;
+        border-radius:25px;
       }
 
       img {
         margin: 5px;
         border: 2px solid black;
         vertical-align: middle;
-        width: 75px;
-        height: 75px;
+        width: 100px;
+        height: 120px;
       }
+      
+      .transparent{
+		foreground:rgba(255,255,255,0.5);
+	  }
     </style>
 
     <!--
@@ -24,15 +29,17 @@
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
     <!--<script src="popup.js"></script>-->
+    <script src="jquery-1.9.1.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
-  	<input type="text" id="twitterid"/>
-  	<input type="button" value="Submit Twitter ID" id="submitbutton"/>
-  	<div id="bookRecommendations">
-  		<p id="dataParagraph">
-  			
-  		</p>
+  	<div id="container">
+  		<div id="inputContainer" class="transparent">
+  			<input type="text" id="twitterid"/>
+  			<input type="button" value="Submit Twitter ID" id="submitbutton"/>
+  		</div>
+  		<div id="bookRecommendations">
+  		</div>
   	</div>
   </body>
 </html>
