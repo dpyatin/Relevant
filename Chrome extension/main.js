@@ -22,16 +22,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				// actual getting image
 				/*bookHtml += "<div style=\"float:left;\"><img src=" + book.image + " alt=\"Smiley face\" height=\"80\" width=\"80\"></div>";*/
 
-        			bookHtml += "<div style=\"float:left;\"><img src=\"http://i.imgur.com/tMfdeDM.jpg\" alt=\"Smiley face\" height=\"80\" width=\"42\"></div>";
+        			bookHtml += "<div style=\"float:left;\"><img src=\"http://i.imgur.com/tMfdeDM.jpg\" alt=\"Smiley face\"></div>";
 
 				// actual getting quote 
         			/* bookHtml += "<div><p><span style=\"font-size:40px;\">&#8220;</span>" 
 + book.quote + "<span style=\"font-size:40px;\">&#8221;</span></p></div>";*/
 
-				bookHtml += "<div><p><span style=\"font-size:40px;\">&#8220;</span>" + "I like large parties, they're so intimate. At small parties, there isn't privacy." + "<span style=\"font-size:40px;\">&#8221;</span></p></div>"
+				bookHtml += "<div><p><span style=\"font-size:40px;\">&#8220;</span>" + "I like large parties, they're so intimate.<br />&nbsp;&nbsp; At small parties, there isn't privacy." + "<span style=\"font-size:40px;\">&#8221;</span>"
 
-        			bookHtml += "<center><a target=\"_blank\" href=" + book.link + ">" + book.title + "</a></center>";
-        			bookHtml += "</div>";	
+        			bookHtml += "</p><p><span style=\"font-size:14px;\">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; - <i><a target=\"_blank\" href=" + book.link + ">" + book.title + "</a></i></span></p>";
+        			bookHtml += "</div></div>";	
         			$("#inputContainer").empty();
         			$("#bookRecommendations").html(bookHtml);
     			}

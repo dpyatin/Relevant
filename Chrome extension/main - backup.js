@@ -18,10 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
     				var bookHtml = "<div>";
         			var book = JSON.parse(req.responseText);
         			//document.getElementById('dataParagraph').innerHTML = "SUCCESS...OMFG\n" + book.title;
-        			bookHtml += "<div style=\"float:left;\"><img src=" + book.image + " alt=\"Smiley face\" height=\"80\" width=\"42\"></div>";
-        			bookHtml += "<div><p><span style=\"font-size:40px;\">\"</span><i>" + book.quote + "</i><span style=\"font-size:40px;\">\"</span></p></div>";
-        			bookHtml += "<a target=\"_blank\" href=" + book.link + ">" + book.title + "</a>";
-        			bookHtml += "</div>";	
+        			
+				// actual getting image
+				/*bookHtml += "<div style=\"float:left;\"><img src=" + book.image + " alt=\"Smiley face\" height=\"80\" width=\"80\"></div>";*/
+
+        			bookHtml += "<div style=\"float:left;\"><img src=\"http://i.imgur.com/tMfdeDM.jpg\" alt=\"Smiley face\" height=\"80\" width=\"42\"></div>";
+
+				// actual getting quote 
+        			/* bookHtml += "<div><p><span style=\"font-size:40px;\">&#8220;</span>" 
++ book.quote + "<span style=\"font-size:40px;\">&#8221;</span></p></div>";*/
+
+				bookHtml += "<div><p><span style=\"font-size:40px; text-align:justify;\">&#8220;</span>" + "I like large parties, they're so intimate. At small parties, there isn't privacy." + "<span style=\"font-size:40px;\">&#8221;</span>"
+
+        			bookHtml += "<span style=\"font-size:16px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <i><a target=\"_blank\" href=" + book.link + ">" + book.title + "</a></i></span></p>";
+        			bookHtml += "</div></div>";	
         			$("#inputContainer").empty();
         			$("#bookRecommendations").html(bookHtml);
     			}
