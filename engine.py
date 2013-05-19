@@ -1,4 +1,7 @@
-from models import Book, Tweet
+import twitter
+
+from config import twitter_config
+from models import Book
 
 class RecommendationService:
 	def __init__(self):
@@ -19,17 +22,19 @@ class RecommendationService:
 class TwitterService:
 	def __init__(self, handle):
 		self.handle = handle
+		self.twitter = None
 
 	def set_handle(self, handle):
 		self.handle = handle
 
-	def retrieve_tweets(self):
-		# TODO: Implement
-		tweet = Tweet(
-			user=self.handle,
-			tweet="Hello World!",
-			timestamp="May 18, 2013 12:03:47",
-			retweet_count=5,
-			fav_count=3,
-			reply_count=2
-		)
+	def authenticate(self):
+		self.twitter = twitter.Api(**twitter_config)
+
+	def get_tweets(self):
+		if not self.twitter:
+			self.authenticate()
+
+		if not self.handle:
+			raise Exception('Parameter `handle` not defined in the engine')
+
+		return self.twitter.GetUserTimeline(self.handle)

@@ -1,6 +1,8 @@
+import sys
+
 from engine import RecommendationService, TwitterService
 from flask import Flask, request, jsonify
-from models import Tweet, Book
+from models import Book
 
 app = Flask(__name__)
 
@@ -16,12 +18,13 @@ def get_book_recommendation():
 
 	try:
 		twitter_service = TwitterService(twitter_handle)
-		tweets = twitter_service.retrieve_tweets()
+		twitter_service.authenticate()
+		tweets = twitter_service.get_tweets()
 
 		reco_service = RecommendationService()
 		recommendation = reco_service.recommend_book_by_tweets(tweets)
 	except:
-		return json_error("Unexpected error: %s" % sys.exc_info()[0])
+		return json_error("%s %s" % sys.exc_info()[:2])
 
 	return json_success(recommendation.__dict__)
 
