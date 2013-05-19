@@ -24,7 +24,7 @@ def get_book_recommendation():
 
 		reco_service = RecommendationService()
 		recommendation = reco_service.recommend_book_by_tweets(tweets)
-		
+
 		# Demo Time! (TODO: Remove this)
 		if twitter_handle in ['ruselprocal', 'kane']:
 			recommendation = reco_service.get_book_hardcoded(twitter_handle)
@@ -50,4 +50,4 @@ def _getParameter(parameter):
 
 if __name__ == "__main__":
 	# Heroku default port is 33507, defined in an environment variable
-	app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+	app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
