@@ -31,8 +31,8 @@ ACCESS_TOKEN_URL  = 'https://api.twitter.com/oauth/access_token'
 AUTHORIZATION_URL = 'https://api.twitter.com/oauth/authorize'
 SIGNIN_URL        = 'https://api.twitter.com/oauth/authenticate'
 
-consumer_key    = config.TWITTER_CONSUMER_KEY
-consumer_secret = config.TWITTER_CONSUMER_SECRET
+consumer_key    = config.twitter_config['consumer_key']
+consumer_secret = config.twitter_config['consumer_secret']
 
 
 if consumer_key is None or consumer_secret is None:
