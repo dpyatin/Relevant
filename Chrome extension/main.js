@@ -5,14 +5,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
 	var submitButton = document.getElementById('submitbutton');
-	submitButton.addEventListener("click", function() { 
-		if (document.getElementById('twitterid').value === "") {
+	//submitButton.addEventListener("click", function() { 
+		/*if (document.getElementById('twitterid').value === "") {
   		
   		}
-  		else {
+  		else {*/
   			var id = document.getElementById('twitterid').value;
   			var req = new XMLHttpRequest();
-  			req.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=" + id, true);
+  			req.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=lucas", true);
   			req.onreadystatechange = function() {
     			if (req.readyState == 4) {
     				var bookHtml = "<div>";
@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
     			}
 			}
     		req.send(null);
-  		}
-	}
-	);
+  		//}
+	//});
 });
 
 
