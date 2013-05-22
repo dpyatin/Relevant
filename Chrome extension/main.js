@@ -3,21 +3,38 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-
+	
+	chrome.runtime.onMessage.addListener(
+    	function(request, sender, sendResponse) {
+        	if(request.method == "getHTML2"){
+            	sendResponse({data: document.body.outerHTML, method: "getHTML2"}); //same as innerText
+        	}
+    	}
+	);
+	
 	var submitButton = document.getElementById('submitbutton');
 	//submitButton.addEventListener("click", function() { 
 		/*if (document.getElementById('twitterid').value === "") {
   		
   		}
   		else {*/
-  			var id = document.getElementById('twitterid').value;
+  			var id = "";//document.getElementById('twitterid').val;
+  			var allHtml = "";
+  			chrome.tabs.getSelected(null, function(tab) {
+  				chrome.tabs.sendMessage(tab.id, {method: "getHTML2"}, function(response) {
+        			if(response.method=="getHTML2"){
+            			allHtml = response.data;
+        			}
+    			});
+  			});
+  		    id = $(allHtml).find("span.screen_name").text().substring(1,999)
   			var req = new XMLHttpRequest();
-  			req.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=lucas", true);
+  			req.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=" + id, true);
   			req.onreadystatechange = function() {
     			if (req.readyState == 4) {
     				var bookHtml = "<div>";
         			var book = JSON.parse(req.responseText);
-        			//document.getElementById('dataParagraph').innerHTML = "SUCCESS...OMFG\n" + book.title;
+        			document.getElementById('bookRecommendations').innerHTML = "SUCCESS...OMFG\n" + id;
         			
 				// actual getting image
 				/*bookHtml += "<div style=\"float:left;\"><img src=" + book.image + " alt=\"Smiley face\" height=\"80\" width=\"80\"></div>";*/
@@ -40,16 +57,5 @@ document.addEventListener('DOMContentLoaded', function () {
   		//}
 	//});
 });
-
-
-handleBookMetadata =  function (e) {
-    var kittens = e.target.responseXML.querySelectorAll('photo');
-    for (var i = 0; i < kittens.length; i++) {
-      var img = document.createElement('img');
-      img.src = this.constructKittenURL_(kittens[i]);
-      img.setAttribute('alt', kittens[i].getAttribute('title'));
-      document.body.appendChild(img);
-    }
-}
   	
 
