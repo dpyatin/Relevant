@@ -1,9 +1,0 @@
-docs/_build/*
-tests_output/*
-dist/*
-*.egg-info
-*.pyc
-*.un~
-.coverage
-!.gitignore
-!.gitmodules
