@@ -17,7 +17,12 @@ function getTwitterHandle() {
 	chrome.tabs.query(
 		{windowId: chrome.windows.WINDOW_ID_CURRENT, active: true}, function(tab) {
 			chrome.tabs.sendMessage(tab[0].id, "getHtml", function(response) {
-				var twitterHandle = $(response.result).find("span.screen-name").text().substring(1,999);
+				var twitterHandle = "";
+				if ($(response.result).find("span.screen-name").length) {
+					twitterHandle = $(response.result).find("span.screen-name").text().substring(1,999);
+				} else {
+					twitterHandle = $(response.result).find(".account-group").data('screen-name');
+				}
 				getRecommendedBook(twitterHandle);
 			});
 		}
@@ -28,7 +33,6 @@ function getRecommendedBook(twitterHandle) {
 	$('body').addClass('loading');
 
 	var request = new XMLHttpRequest();
-	
 	request.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=" + twitterHandle, true);
 	request.onreadystatechange = function() {
 		if (request.readyState == 4) {
