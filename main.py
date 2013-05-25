@@ -13,42 +13,48 @@ def index():
 
 @app.route("/api/getUserTweets/")
 def get_user_tweets():
-    twitter_handle = _getParameter('twitterHandle')
-    if twitter_handle is None:
-        return json_error("Missing required parameter: twitterHandle")
+	twitter_handle = _getParameter('twitterHandle')
+	if twitter_handle is None:
+		return json_error("Missing required parameter: twitterHandle")
 
-    try:
-        twitter_service = TwitterService(twitter_handle)
-        twitter_service.authenticate()
-        tweets = twitter_service.get_tweets()
+	tweet_json = []
+	try:
+		twitter_service = TwitterService(twitter_handle)
+		twitter_service.authenticate()
+		tweets = twitter_service.get_tweets()
 
-    except:
-        return json_error("%s %s" % sys.exc_info()[:2])
+		tweet_dict = [tweet.__dict__ for tweet in tweets]
+		for tweet in tweet_dict:
+			if '_user' in tweet:
+				tweet['_user'] = tweet['_user'].__dict__
+				tweet_json.append(tweet)
+	except:
+		return json_error("%s %s" % sys.exc_info()[:2])
 
-    return json_success(tweets.__dict__)
+	return jsonify(result=tweet_json)
 
 @app.route("/api/getBookRecommendation/", methods=['GET', 'POST'])
 def get_book_recommendation():
-    twitter_handle = _getParameter('twitterHandle')
-    if twitter_handle is None:
-        return json_error("Missing required parameter: twitterHandle")
+	twitter_handle = _getParameter('twitterHandle')
+	if twitter_handle is None:
+		return json_error("Missing required parameter: twitterHandle")
 
-    try:
-        twitter_service = TwitterService(twitter_handle)
-        twitter_service.authenticate()
-        tweets = twitter_service.get_tweets()
+	try:
+		twitter_service = TwitterService(twitter_handle)
+		twitter_service.authenticate()
+		tweets = twitter_service.get_tweets()
 
-        reco_service = RecommendationService()
-        recommendation = reco_service.recommend_book_by_tweets(tweets)
+		reco_service = RecommendationService()
+		recommendation = reco_service.recommend_book_by_tweets(tweets)
 
-        # Demo Time! (TODO: Remove this)
-        if twitter_handle in ['ruselprocal', 'kane']:
-            recommendation = reco_service.get_book_hardcoded(twitter_handle)
+		# Demo Time! (TODO: Remove this)
+		if twitter_handle in ['ruselprocal', 'kane']:
+			recommendation = reco_service.get_book_hardcoded(twitter_handle)
 
-    except:
-        return json_error("%s %s" % sys.exc_info()[:2])
+	except:
+		return json_error("%s %s" % sys.exc_info()[:2])
 
-    return json_success(recommendation.__dict__)
+	return json_success(recommendation.__dict__)
 
 def json_success(message):
 	return jsonify(message)
