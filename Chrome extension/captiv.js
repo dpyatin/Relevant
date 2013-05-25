@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeRecommender() {
 	getTwitterHandle();
+
+	$('a.close').click(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		window.close();
+	});
 }
 
 function getTwitterHandle() {
@@ -23,6 +30,8 @@ function getTwitterHandle() {
 }
 
 function getRecommendedBook(twitterHandle) {
+	$('body').addClass('loading');
+
 	var request = new XMLHttpRequest();
 	request.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=" + twitterHandle, true);
 	request.onreadystatechange = function() {
@@ -34,6 +43,13 @@ function getRecommendedBook(twitterHandle) {
 }
 
 function updateUI(recommendedBook) {
+	$('body').removeClass('loading');
+	$('body').off('click').on('click', function() {
+		// TODO: update book link url
+		window.open('http://captiv.co');
+	});
+
+
 	var validFields = ['title', 'author', 'image', 'quote', 'link', 'error'];
 	_cleanDivs(validFields);
 
@@ -44,7 +60,7 @@ function updateUI(recommendedBook) {
 		}
 	});
 	$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
-	$("#quote").wrapInner('<p class="quotestyle">');
+	// $("#quote").wrapInner('<p class="quotestyle">');
 }
 
 function _cleanDivs(divs) {
