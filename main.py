@@ -11,6 +11,19 @@ app = Flask(__name__)
 def index():
 	return "NYC Publishing Hackathon: Relevant"
 
+@app.route("/api/getUserTweets")
+def get_user_tweets():
+    twitter_handle = _getParameter('twitterHandle')
+	try:
+		twitter_service = TwitterService(twitter_handle)
+		twitter_service.authenticate()
+		tweets = twitter_service.get_tweets()
+
+	except:
+		return json_error("%s %s" % sys.exc_info()[:2])
+
+	return json_success(tweets.__dict__)
+
 @app.route("/api/getBookRecommendation/", methods=['GET', 'POST'])
 def get_book_recommendation():
 	twitter_handle = _getParameter('twitterHandle')
