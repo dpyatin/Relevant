@@ -39,6 +39,8 @@ function updateUI(recommendedBook) {
 			$('#' + k).text(v);
 		}
 	});
+	$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
+	$("#quote").wrapInner('<p class="quotestyle">');
 }
 
 function _cleanDivs(divs) {
