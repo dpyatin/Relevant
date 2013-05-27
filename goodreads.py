@@ -10,7 +10,7 @@ class GoodReads:
 		""" Quotes by Tag
 		Scrapes the first page of quotes for a given tag and strips
 		any quotes that don't have a book associated with them.
-		Returns a dict with {quote, author, book}.
+		Returns a dict with {quote, author, image, title, tags}.
 		"""
 		url = self.quote_url.replace("[TAG]", tag)
 		html = self._fetch_page(url)
