@@ -1,11 +1,12 @@
 import twitter
 
 from config import twitter_config
+from goodreads import GoodReads
 from models import Book
 
 class RecommendationService:
 	def __init__(self):
-		pass
+		self.goodreads = GoodReads()
 
 	def recommend_book_by_tweets(self, tweets):
 		""" Placeholder function for Tina's code """
@@ -17,6 +18,9 @@ class RecommendationService:
 			quote="I like large parties, they're so intimate. At small parties, there isn't privacy.",
 			link="http://www.amazon.com/The-Great-Gatsby-Scott-Fitzgerald/dp/0743273567"
 		)
+
+	def get_quotes_by_keyword(self, keyword):
+		return self.goodreads.book_quotes_by_tag(keyword)
 
 	def get_book_hardcoded(self, handle):
 		if handle == 'ruselprocal':
