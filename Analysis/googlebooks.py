@@ -1,9 +1,9 @@
 from apiclient.discovery import build
-# from googlebooks import GoogleBooks; gb = GoogleBooks(); gb.getExcerpt({'quote': 'politics', 'title': 'kennedy'})
+
 class GoogleBooks:
 	api_key = "AIzaSyAnwBRAP94niYqybkY8QkAIvG7QqbDiicQ"
 
-	def getExcerpt(self, book_info):
+	def get_excerpt(self, book_info):
 		book_result = {}
 
 		response = self._search_book(book_info)
