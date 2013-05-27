@@ -24,11 +24,14 @@ def get_user_tweets():
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
 
-		tweet_dict = [tweet.__dict__ for tweet in tweets]
-		for tweet in tweet_dict:
-			if '_user' in tweet:
+		tweet_list = [tweet.__dict__ for tweet in tweets]
+
+		for tweet in tweet_list:
+			try:
 				tweet['_user'] = tweet['_user'].__dict__
-				tweet_json.append(tweet)
+			except KeyError:
+				pass
+			tweet_json.append(tweet)
 	except:
 		return json_error("%s %s" % sys.exc_info()[:2])
 

@@ -1,15 +1,20 @@
 import twitter
 
+from Analysis.googlebooks import GoogleBooks
 from config import twitter_config
+from goodreads import GoodReads
 from models import Book
 
 class RecommendationService:
 	def __init__(self):
-		pass
+		self.goodreads = GoodReads()
+		self.googlebooks = GoogleBooks()
 
+
+	# DEPRECATED
 	def recommend_book_by_tweets(self, tweets):
 		""" Placeholder function for Tina's code """
-		# TODO: Implement
+		# TODO: Implemen
 		return Book(
 			title="The Great Gatsby",
 			author="F. Scott Fitzgerald",
@@ -18,6 +23,17 @@ class RecommendationService:
 			link="http://www.amazon.com/The-Great-Gatsby-Scott-Fitzgerald/dp/0743273567"
 		)
 
+
+	def get_book_excerpt_by_book_info(self, book_info):
+		# Feed in get_quotes_by_keyword output into this method
+		return googlebooks.get_excerpt(book_info)
+
+
+	def get_quotes_by_keyword(self, keyword):
+		return self.goodreads.book_quotes_by_tag(keyword)
+
+
+	# DEPRECATED
 	def get_book_hardcoded(self, handle):
 		if handle == 'ruselprocal':
 			return Book(
@@ -42,11 +58,14 @@ class TwitterService:
 		self.handle = handle
 		self.twitter = None
 
+
 	def set_handle(self, handle):
 		self.handle = handle
 
+
 	def authenticate(self):
 		self.twitter = twitter.Api(**twitter_config)
+
 
 	def get_tweets(self):
 		if not self.twitter:

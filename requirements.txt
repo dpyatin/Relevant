@@ -2,3 +2,5 @@ flask
 python-twitter
 sqlalchemy
 flask-sqlalchemy
+beautifulsoup4
+google-api-python-client
