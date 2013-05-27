@@ -3,6 +3,7 @@
 
 	"name": "Captiv",
 	"description": "Captiv is a book discovery platform",
+	"background": { "scripts": ["background.js"] },
 	"version": "1.0",
 	
 	"content_security_policy": "script-src 'self'; object-src 'self'",	
@@ -17,7 +18,7 @@
 	],
 	"content_scripts": [{
 		"matches" : ["*://*/*"],
-		"js" : ["content.js"],
+		"js" : ["content.js", "jquery-1.9.1.js"],
 		"run_at": "document_end"
 	}]
 }

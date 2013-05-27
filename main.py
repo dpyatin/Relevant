@@ -56,6 +56,21 @@ def get_book_recommendation():
 
 	return json_success(recommendation.__dict__)
 
+@app.route("api/areNewTweetsAvailable/", methods=['GET', 'POST'])
+def check_for_new_tweets():
+	username = _getParameter('username')
+	if username is None:
+		return json_error("Missing required parameter: username")
+	
+	"""tweet_json=[]
+	try:
+		twitter_service = TwitterService(username)
+		twitter_service.authenticate()
+		tweets = twitter_service.get_tweets()
+		"""
+		# check against database and return result
+	return true
+
 def json_success(message):
 	return jsonify(message)
 
