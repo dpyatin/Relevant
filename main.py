@@ -69,7 +69,7 @@ def check_for_new_tweets():
 		tweets = twitter_service.get_tweets()
 		"""
 		# check against database and return result
-	return jsonify(result=true)
+	return jsonify(result="true")
 
 def json_success(message):
 	return jsonify(message)
