@@ -25,6 +25,7 @@ class RecommendationService:
 
 
 	def get_book_excerpt_by_book_info(self, book_info):
+		# Feed in get_quotes_by_keyword output into this method
 		return googlebooks.get_excerpt(book_info)
 
 
