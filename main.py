@@ -56,7 +56,7 @@ def get_book_recommendation():
 
 	return json_success(recommendation.__dict__)
 
-@app.route("api/areNewTweetsAvailable/", methods=['GET', 'POST'])
+@app.route("/api/areNewTweetsAvailable/", methods=['GET', 'POST'])
 def check_for_new_tweets():
 	username = _getParameter('username')
 	if username is None:
