@@ -12,6 +12,7 @@ class GoogleBooks:
 			book_result = self._parse_book(book)
 
 			if book_result is not None:
+				book_result['link'] += '&q=' + book_info['quote']
 				return book_result
 
 		return book_result
@@ -54,11 +55,15 @@ class GoogleBooks:
 
 			excerpt = book['searchInfo']['textSnippet']
 			excerpt = excerpt.encode('ascii', 'ignore')
+
+			link = book['accessInfo']['webReaderLink']
+			link = link.encode('ascii', 'ignore')
 			
 			result = {
 				'title': title,
 				'author': author,
-				'excerpt': excerpt }
+				'excerpt': excerpt,
+				'link': link }
 		except:
 			pass
 
