@@ -60,7 +60,6 @@ function updateUI(recommendedBook) {
 		}
 	});
 	$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
-	chrome.browserAction.setIcon({path: 'icon.png'});
 }
 
 function _cleanDivs(divs) {
