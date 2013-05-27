@@ -1,3 +1,4 @@
 flask
 python-twitter
 beautifulsoup4
+google-api-python-client
