@@ -19,3 +19,6 @@ chrome.runtime.onMessage.addListener(
 		}
 	}
 );
+
+// TODO: this doesn't work yet
+chrome.browserAction.setIcon({path: 'icon_glow.png'});
