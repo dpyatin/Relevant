@@ -3,7 +3,8 @@ import sys
 
 from engine import RecommendationService, TwitterService
 from flask import Flask, request, jsonify
-from models import Book
+from app import db
+import models
 
 app = Flask(__name__)
 
@@ -62,14 +63,22 @@ def check_for_new_tweets():
 	if username is None:
 		return json_error("Missing required parameter: username")
 	
-	"""tweet_json=[]
+	tweet_json=[]
 	try:
 		twitter_service = TwitterService(username)
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
-		"""
-		# check against database and return result
-	return jsonify(result="true")
+		user = models.User.query.filter(models.User.username == username).all()
+		#print tweets[0].text
+		""""if(user.lastTweet):
+		if u.lastTweet == tweets[0].text:
+			return jsonify(result="false")
+		else:
+			return jsonify(result="true")"""
+		return jsonify(result="true")
+	
+	except Exception as e:
+		raise e #return json_error("%s %s" % sys.exc_info()[:2])
 
 def json_success(message):
 	return jsonify(message)

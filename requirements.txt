@@ -1,2 +1,4 @@
 flask
 python-twitter
+sqlalchemy
+flask-sqlalchemy
