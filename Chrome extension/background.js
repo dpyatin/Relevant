@@ -19,9 +19,9 @@ setInterval(function() {
 				ajaxRequest.onreadystatechange = function() {
 					if (ajaxRequest.readyState == 4) {
 						var ajaxResponse = JSON.parse(ajaxRequest.responseText);
-						if(ajaxResponse.result == true) {
+						if(ajaxResponse.result == "true") {
 							chrome.browserAction.setIcon({path: 'logo_glow.png'});
-						} else if (ajaxResponse.result == false) {
+						} else if (ajaxResponse.result == "false") {
 							// As an enhacement for the future, no need to keep checking for same user if server reported that new tweets are available
 							chrome.browserAction.setIcon({path: 'icon.png'});
 						}
