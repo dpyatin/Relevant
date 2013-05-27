@@ -3,24 +3,39 @@ from nltk.corpus import wordnet as wn
 
 #checkKeyWords = [('dog','cat'),('',''),(),()]
 
-topicSet = ['food','weather','celebrity','art', 'animals', 'clothes', 'sports','fantasy']
+topicSet = ['smart','choice','love','clumsy', 'asian_parent', 'crush']
+
+BOOK_COLS = ['id','author','title','description','cat']
 
 def getKeyWords():
-    str = 'jacket'
+    str = 'feeling'
     return str.lower()
+
+def customizedOutput(inputJson):
+    
+    if inputJson == None:
+        raise Exception('Error','INPUT is EMPTY')
+    for key in BOOK_COLS:
+        cur_obj = inputJson.get(key)
+        if cur_obj == None:
+            print key + ' : ' + 'NOT FOUND'
+        else:    
+            print key + " : " + str(inputJson.get(key))
+
 
 ###
 # 
 ###
-def getSolrResult():
+def getSolrResult(col_name, cur_topics):
     # create a connection to a solr server
     s = solr.SolrConnection('http://127.0.0.1:8983/solr')
 
-    curKeyWord = getKeyWords()
+    #curKeyWord = getKeyWords()
     # do a search
-    response = s.query('topics:' + curKeyWord)
+    response = s.query(col_name +':' + cur_topics)
     for hit in response.results:
-        print hit
+        #print hit
+        customizedOutput(hit)
 
 ###
 # give keyword and topic, find the first meaning for both words, and calculate the score, then return scores
@@ -31,7 +46,7 @@ def getSolrResult():
 def getSimilarTopic(keyWord):
     
     if keyWord == None or len(keyWord.strip()) == 0:
-      raise Exception('ERROR','Key word name is None or Empty')
+        raise Exception('ERROR','Key word name is None or Empty')
 
     rsSet = {}
 
@@ -87,6 +102,14 @@ def main():
         print keyWord + " : " + str(curRSTuple[0].definition)
         print str(curRSTuple[3]) + " : " + str(curRSTuple[1].definition)
         print "Score is : " + str(curRSTuple[2])
+
+    curTopics = str(curRSTuple[3])
+
+    getSolrResult('cat', curTopics)
+
+
+    # start to find topics in solr system
+
 
 '''
     keyWord2 = 'politics.n.01'
