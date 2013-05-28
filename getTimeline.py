@@ -5,7 +5,6 @@ import twitter
 def getTimeline(api, userid):
     
     timelineObj = api.GetUserTimeline(user_id=userid, count=200, trim_user=1)
-    print api.MaximumHitFrequency()
     
     outTimeline = []
         
@@ -27,7 +26,7 @@ def getTimeline(api, userid):
 
 def main():
     # i/o
-    curDataPath = 'sampleids.txt'
+    curDataPath = 'UIDlist1.txt'
     outputPath = 'timelinecorpus.csv'
     
     # initialize api
@@ -55,7 +54,13 @@ def main():
         
         uid = int(cur_line)
         
-        timelineWriter.writerow(getTimeline(api,uid))  
+        try: 
+            timelineWriter.writerow(getTimeline(api,uid))
+        except:
+            print uid
+            continue
+              
+        print "wrote another row"        
                 
 if __name__ == "__main__":
     main() 
