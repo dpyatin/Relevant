@@ -49,16 +49,15 @@ def get_book_recommendation():
 		tweets = twitter_service.get_tweets()
 
 		reco_service = RecommendationService()
-		recommendation = reco_service.recommend_book_by_tweets(tweets)
-
+		recommendation = reco_service.recommend_book(tweets[0])
 		# Demo Time! (TODO: Remove this)
-		if twitter_handle in ['ruselprocal', 'kane']:
-			recommendation = reco_service.get_book_hardcoded(twitter_handle)
+		#if twitter_handle in ['ruselprocal', 'kane']:
+		#	recommendation = reco_service.get_book_hardcoded(twitter_handle)
 
 	except:
 		return json_error("%s %s" % sys.exc_info()[:2])
 
-	return json_success(recommendation.__dict__)
+	return json_success(recommendation[0])
 
 @app.route("/api/areNewTweetsAvailable/", methods=['GET', 'POST'])
 def check_for_new_tweets():
@@ -72,7 +71,7 @@ def check_for_new_tweets():
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
 		user = models.User.query.filter(models.User.username == username).all()
-		#print tweets[0].text
+		#print tweets[1].text
 		""""if(user.lastTweet):
 		if u.lastTweet == tweets[0].text:
 			return jsonify(result="false")

@@ -4,3 +4,5 @@ sqlalchemy
 flask-sqlalchemy
 beautifulsoup4
 google-api-python-client
+numpy
+nltk

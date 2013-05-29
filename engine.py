@@ -3,6 +3,7 @@ import twitter
 from Analysis.googlebooks import GoogleBooks
 from config import twitter_config
 from goodreads import GoodReads
+from Analysis import Burstiness
 from models import Book
 
 class RecommendationService:
@@ -22,11 +23,18 @@ class RecommendationService:
 			quote="I like large parties, they're so intimate. At small parties, there isn't privacy.",
 			link="http://www.amazon.com/The-Great-Gatsby-Scott-Fitzgerald/dp/0743273567"
 		)
-
+	
+	
+	def recommend_book(self, tweet):
+		print tweet.text
+		keyword = Burstiness.findTweetTopic(tweet.text)
+		book_info = self.get_quotes_by_keyword(keyword)
+		return book_info
+		#return self.get_book_excerpt_by_book_info(book_info)    -- we dont need this for now... the excerpts that were getting returned were not really useable for display
 
 	def get_book_excerpt_by_book_info(self, book_info):
 		# Feed in get_quotes_by_keyword output into this method
-		return googlebooks.get_excerpt(book_info)
+		return self.googlebooks.get_excerpt(book_info)
 
 
 	def get_quotes_by_keyword(self, keyword):

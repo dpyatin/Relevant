@@ -1,22 +1,22 @@
 import csv as csv 
-import numpy as np
+#import numpy as np
 import nltk as nltk
 from operator import itemgetter
-import globals
+#import globals
 from nltk.stem.wordnet import WordNetLemmatizer
-import TweetExtraction
+#import TweetExtraction
 import re
 import sys
 import nltk.data, nltk.tag
 from nltk.corpus import stopwords
-import pytumblr
-from sklearn.ensemble import RandomForestClassifier 
+#import pytumblr
+#from sklearn.ensemble import RandomForestClassifier 
 
-def findTweetTopic(): 
+def findTweetTopic(tweet): 
 	tagger = nltk.data.load(nltk.tag._POS_TAGGER)
 
-	inBuffer = []
-	tweet = sys.stdin.readline()
+#	inBuffer = []
+#	tweet = sys.stdin.readline()
 
 	tokenized = nltk.wordpunct_tokenize(tweet)
 
@@ -25,7 +25,6 @@ def findTweetTopic():
 
 	#identify parts of speech, pull out nouns
 	taggedTweet = nltk.pos_tag(filtered_words)
-
 
 	nouns = []
 	for word in taggedTweet:
@@ -64,7 +63,4 @@ def findTweetTopic():
 		else:
 			obj[3] = 0
 	nouns= sorted(nouns, key=itemgetter(3), reverse=True)
-	print nouns
 	return nouns[0][0]
-
-print findTweetTopic()

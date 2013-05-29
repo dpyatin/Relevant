@@ -5,14 +5,14 @@ class GoogleBooks:
 
 	def get_excerpt(self, book_info):
 		book_result = {}
-
 		response = self._search_book(book_info)
-
+		print response
 		for book in response.get('items', []):
 			book_result = self._parse_book(book)
 
 			if book_result is not None:
 				book_result['link'] += '&q=' + book_info['quote']
+				book_result['quote'] = book_info['quote']
 				return book_result
 
 		return book_result
