@@ -85,25 +85,28 @@ def check_for_new_tweets():
 	
 	try:
 		twitter_service = TwitterService(username)
+		reco_service = RecommendationService()
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
 		user = models.User.query.filter(models.User.username == username).first()
 		#print tweets[1].text
 		print "*************In areNewTweetsAvailable**********************"
-		print "Latest available tweet is : " + tweets[0].text
 		if(user):
 			print "Last stored tweet for this user is : " + user.lastTweet
 			if user.lastTweet == tweets[0].text:
 				return jsonify(result="false")
 			else:
-				reco_service = RecommendationService()
-				recommendation = reco_service.recommend_book(tweets[0].text)
+				recommendation = reco_service.recommend_book(tweets[0])
 				if(len(recommendation) > 0):
 					return jsonify(result="true")
 				else:
 					return jsonify(result="false")
-		
-		return jsonify(result="true")
+		else:
+			recommendation = reco_service.recommend_book(tweets[0])
+			if(len(recommendation) > 0):
+				return jsonify(result="true")
+			else:
+				return jsonify(result="false")
 	
 	except:
 		return json_error("%s %s" % sys.exc_info()[:2])

@@ -26,8 +26,10 @@ class RecommendationService:
 	
 	
 	def recommend_book(self, tweet):
+
 		print "Text of the new tweet is : " + tweet.text
 		keyword = Burstiness.findTweetTopic(tweet.text)
+		print keyword
 		book_info = self.get_quotes_by_keyword(keyword)
 		return book_info
 		#return self.get_book_excerpt_by_book_info(book_info)    -- we dont need this for now... the excerpts that were getting returned were not really useable for display
