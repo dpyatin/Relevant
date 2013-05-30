@@ -17,6 +17,10 @@ def removeSpecialTokens(cur_line):
 
 		if tk == 'RT' or tk[0] == '@' or tk[0] == '\\':
 			continue
+		if len(tk) > 3 and tk[1:3] == '\\x':
+			continue
+		if tk[0:4] == 'http':
+			continue
 		else:
 			rs_tokens.append(tk)
 	
@@ -24,25 +28,26 @@ def removeSpecialTokens(cur_line):
 	return ' '.join(rs_tokens)
 
 def findTweetTopic(tweet): 
+	lmtzr = WordNetLemmatizer()
+	
 	#tagger = nltk.data.load(nltk.tag._POS_TAGGER)
 	tokenized = nltk.wordpunct_tokenize(tweet)
-
+	
 	# remove stopwords
-	filtered_words = [w for w in tokenized if not w in stopwords.words('english')]
-
+	filtered_words = [w for w in tokenized if not w in stopwords.words('english') and len(w) > 2]
+	
 	# identify parts of speech, pull out nouns
 	taggedTweet = nltk.pos_tag(filtered_words)
-	
 	nouns = []
 	for word in taggedTweet:
-		if(word[1] == "NN" or word[1] == "FW" or  word[1] == "NNS" or word[1] == "NNP" or word[1] == "NNPS"):
+		pos = word[1]
+		if(pos[0:2] == "NN" or pos == "FW"):
 			word = str(word[0])
-			lmtzr = WordNetLemmatizer()
 			word = lmtzr.lemmatize(word)
 			nouns.append([word, 0, 0, 0.0])
+			
 
 	return nouns
-
 
 '''
 Processes the corpus into a readable format.
@@ -51,10 +56,9 @@ def processCorpus(csvfile):
 	csv_file_object = csv.reader(open('G:\\Users\\Russell\\Dropbox\\PubHack\\timelinecorpus.csv', 'r')) 
 
 	myCorpus = []
-	rowCount = 0
+	#rowCount = 0
 
 	f_write = open('cleancorpus.txt','w')
-
 
 	for row in csv_file_object:
 		document = ''
@@ -71,18 +75,19 @@ def bursty(text):
 	#process the corpus
 	#myCorpus = processCorpus('timelinecorpus.csv')
 	
-	if text == '':
+	if text == '':		
 		print "Please input text"
 		text = sys.stdin.readline()
-	
+			
 	tstart = time.clock()
 		
 	#pick up existing corpus
 	myCorpus = open('cleancorpus.txt','rb')
-		
+	
 	#stdin version
-	nouns = findTweetTopic(text)
-		
+	nouns = findTweetTopic(removeSpecialTokens(text))
+	print time.clock() - tstart
+	
 	for row in myCorpus:
 		for i in range(0, len(nouns)):
 			targetNoun1 = ' ' + str(nouns[i][0]) + ' ' 
@@ -96,8 +101,10 @@ def bursty(text):
 				nouns[i][2] = nouns[i][2] + 1
 
 	for obj in nouns:
-		if obj[2] > 0:
+		if obj[2] > 5.:
 			obj[3] = float(float(obj[1]) / float(obj[2]))
+		elif obj[2] > 0.:
+			obj[3] = float((float(obj[1]) + 5.0) / (float(obj[2]) + 5.0))
 		else:
 			obj[3] = 0
 	nouns = sorted(nouns, key=itemgetter(3), reverse=True)
@@ -106,8 +113,10 @@ def bursty(text):
 	print "Time:" + str(tfin)
 	
 	print nouns
-	return nouns[0][0]
+	try:
+		return nouns[0][0]
+	except:
+		return ''
 
 if __name__ == "__main__":
 	bursty('')
-
