@@ -39,13 +39,13 @@ def findTweetTopic(tweet):
 	# identify parts of speech, pull out nouns
 	taggedTweet = nltk.pos_tag(filtered_words)
 	nouns = []
-	for word in taggedTweet:
-		pos = word[1]
-		if(pos[0:2] == "NN" or pos == "FW"):
-			word = str(word[0])
-			word = lmtzr.lemmatize(word)
-			nouns.append([word, 0, 0, 0.0])
-			
+	if taggedTweet != []: 
+		for word in taggedTweet:
+			pos = word[1]
+			if(pos[0:2] == "NN" or pos == "FW"):
+				word = str(word[0])
+				word = lmtzr.lemmatize(word)
+				nouns.append([word, 0, 0, 0.0])
 
 	return nouns
 
