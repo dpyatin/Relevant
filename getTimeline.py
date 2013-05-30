@@ -17,12 +17,32 @@ def getTimeline(api, userid):
         except ValueError:
             return None
         
-        cur_tweet.append(cur_json_obj.get('text').encode('utf-8'))
+        
+        
+        cur_tweet.append(removeSpecialTokens(cur_json_obj.get('text')).encode('utf-8'))
         cur_tweet.append(cur_json_obj.get('retweet_count'))
         outTimeline.append(cur_tweet)
         #print "wrote another tweet"
             
     return outTimeline
+
+def removeSpecialTokens(cur_line):
+    
+    cur_tokens = cur_line.split(' ')
+
+    rs_tokens = []
+
+    for tk in cur_tokens:
+
+        if tk == None or len(tk) == 0:
+            continue
+
+        if tk == 'RT' or tk[0] == '@':
+            continue
+        else:
+            rs_tokens.append(tk)
+
+    return ' '.join(rs_tokens)
 
 def main():
     # i/o
@@ -30,13 +50,13 @@ def main():
     outputPath = 'timelinecorpus.csv'
     
     # initialize api
-    api = twitter.Api(consumer_key='J6N9dwxP2ZuVDVOBRbzO1g',
-                      consumer_secret='iSDinlyBTQn4814PPKHsbnSHQJCg24aCzdlgCWwPp3U',
-                      access_token_key='109161820-h7f8U3vSUU7J4OUlEK7Ts52X607GX7RU5XZ49KHx',
-                      access_token_secret='57IXeuOsX2j2ylKiy3FAgbQcSd2U1DmPNd0efJis')
-    
+    api = twitter.Api(consumer_key='FuFzMcJWJeZMnYnY9RisPw',
+                     consumer_secret='fpBFDpd15WwOkwdJDcCvZECSctcMkfaM8qmiVd1a5Q',
+                     access_token_key='567581600-aF8Aweppmj9nbSUZJbMVQdkgvyHBEIy7xNCQGg1h',
+                     access_token_secret='UGiKLWfaYEbv8yoqNMVVlFdFv0uaEIYWdRlfVoM')
+        
     userids = open(curDataPath, 'r')
-    timelineOut = open(outputPath, 'wb')
+    timelineOut = open(outputPath, 'a+b')
     timelineWriter = csv.writer(timelineOut,delimiter=',',dialect='excel')
     
     print "done initializing"
