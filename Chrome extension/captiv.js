@@ -52,14 +52,16 @@ function updateUI(recommendedBook) {
 
 	var validFields = ['title', 'author', 'image', 'quote', 'link', 'error'];
 	_cleanDivs(validFields);
-
+	
 	bookRecommendation = $.parseJSON(recommendedBook);
-	$.each(bookRecommendation, function(k, v) {
-		if (validFields.indexOf(k) >= 0) {
-			$('#' + k).text(v);
-		}
-	});
-	$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
+	if(!bookRecommendation.hasOwnProperty("result")) { // when there is no book to recommend {result:"none"} gets returned
+		$.each(bookRecommendation, function(k, v) {
+			if (validFields.indexOf(k) >= 0) {
+				$('#' + k).text(v);
+			}
+		});
+		$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
+	} else {console.log("success");}	 
 }
 
 function _cleanDivs(divs) {
