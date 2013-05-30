@@ -6,7 +6,7 @@ setInterval(function() {
 	chrome.tabs.getSelected(null, function(tab) {
         var tabUrl = tab.url;
         
-        if (tabUrl.indexOf("twitter") != -1) {
+        if (tabUrl.indexOf("twitter.com") != -1) {
         	chrome.tabs.sendMessage(tab.id, "getUsername", function(response) {
         		// response.result contains html of the page
         		var username = response.result;

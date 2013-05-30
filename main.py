@@ -87,10 +87,10 @@ def check_for_new_tweets():
 		twitter_service = TwitterService(username)
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
-		user = models.User.query.filter(models.User.username == username).all()
+		user = models.User.query.filter(models.User.username == username).first()
 		#print tweets[1].text
 		if(user):
-			if u.lastTweet == tweets[0].text:
+			if user.lastTweet == tweets[0].text:
 				return jsonify(result="false")
 			else:
 				reco_service = RecommendationService()
@@ -102,8 +102,8 @@ def check_for_new_tweets():
 		
 		return jsonify(result="true")
 	
-	except Exception as e:
-		raise e #return json_error("%s %s" % sys.exc_info()[:2])
+	except:
+		return json_error("%s %s" % sys.exc_info()[:2])
 
 def json_success(message):
 	return jsonify(message)
