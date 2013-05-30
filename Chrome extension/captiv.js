@@ -36,17 +36,22 @@ function getRecommendedBook(twitterHandle) {
 	request.open("GET", "http://stormy-dusk-3543.herokuapp.com/api/getBookRecommendation/?twitterHandle=" + twitterHandle, true);
 	request.onreadystatechange = function() {
 		if (request.readyState == 4) {
-			updateUI(request.responseText);
+			updateUI(request.responseText, twitterHandle);
 		}
 	}
 	request.send()
 }
 
-function updateUI(recommendedBook) {
+function updateUI(recommendedBook, twitterHandle) {
 	$('body').removeClass('loading');
 	$('body').off('click').on('click', function() {
 		// TODO: update book link url
-		window.open('http://captiv.co');
+		if (typeof recommendedBook == 'undefined') {
+			window.open('http://captiv.co');
+		} else {
+			bookData = $.parseJSON(recommendedBook);
+			window.open("http://captive-viewbook-staging.herokuapp.com/?title=" + encodeURIComponent(bookData.title)  + "&quote=" + encodeURIComponent(bookData.quote) + "&user=" + twitterHandle);
+		}
 	});
 
 
@@ -61,7 +66,7 @@ function updateUI(recommendedBook) {
 			}
 		});
 		$("#image").wrapInner('<img src=\"' + $("#image").text()  +  ' \" />');
-	} else {console.log("success");}	 
+	}
 }
 
 function _cleanDivs(divs) {

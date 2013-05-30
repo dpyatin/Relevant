@@ -89,6 +89,9 @@ def check_for_new_tweets():
 		tweets = twitter_service.get_tweets()
 		user = models.User.query.filter(models.User.username == username).first()
 		#print tweets[1].text
+		print "*************In areNewTweetsAvailable**********************"
+		print "Last stored tweet for this user is : " + user.lastTweet
+		print "Latest available tweet is : " + tweets[0].text
 		if(user):
 			if user.lastTweet == tweets[0].text:
 				return jsonify(result="false")
