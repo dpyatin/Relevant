@@ -47,17 +47,35 @@ def get_book_recommendation():
 		twitter_service = TwitterService(twitter_handle)
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
-
+		latestTweet = tweets[0]
 		reco_service = RecommendationService()
-		recommendation = reco_service.recommend_book(tweets[0])
+		recommendation = reco_service.recommend_book(latestTweet)
+		
+		user = models.User.query.filter_by(username=twitter_handle).first()
+		if(user):
+			print "Tweet retrieved from the database for the user : " + user.lastTweet
+			user.lastTweet = latestTweet.text
+			#db.session.merge(user)
+			db.session.commit()
+		else:
+			user = models.User()
+			user.username = twitter_handle
+			user.lastTweet = latestTweet.text
+			print "Saving new user with the following tweet : " + user.lastTweet
+			db.session.add(user)
+			db.session.commit()
+			
 		# Demo Time! (TODO: Remove this)
 		#if twitter_handle in ['ruselprocal', 'kane']:
 		#	recommendation = reco_service.get_book_hardcoded(twitter_handle)
 
 	except:
 		return json_error("%s %s" % sys.exc_info()[:2])
-
-	return json_success(recommendation[0])
+	
+	if(len(recommendation) > 0):
+		return json_success(recommendation[0])
+	else:
+		return jsonify(result="none")
 
 @app.route("/api/areNewTweetsAvailable/", methods=['GET', 'POST'])
 def check_for_new_tweets():
@@ -65,18 +83,23 @@ def check_for_new_tweets():
 	if username is None:
 		return json_error("Missing required parameter: username")
 	
-	tweet_json=[]
 	try:
 		twitter_service = TwitterService(username)
 		twitter_service.authenticate()
 		tweets = twitter_service.get_tweets()
 		user = models.User.query.filter(models.User.username == username).all()
 		#print tweets[1].text
-		""""if(user.lastTweet):
-		if u.lastTweet == tweets[0].text:
-			return jsonify(result="false")
-		else:
-			return jsonify(result="true")"""
+		if(user):
+			if u.lastTweet == tweets[0].text:
+				return jsonify(result="false")
+			else:
+				reco_service = RecommendationService()
+				recommendation = reco_service.recommend_book(tweets[0].text)
+				if(len(recommendation) > 0):
+					return jsonify(result="true")
+				else:
+					return jsonify(result="false")
+		
 		return jsonify(result="true")
 	
 	except Exception as e:

@@ -17,4 +17,4 @@ class User(db.Model):
 	lastTweet = db.Column(db.String(140))
 		
 	def __repr__(self):
-		return "%s, %s" % (self.username, self.tweet)
+		return "%s, %s" % (self.username, self.lastTweet)

@@ -26,7 +26,7 @@ class RecommendationService:
 	
 	
 	def recommend_book(self, tweet):
-		print tweet.text
+		print "Text of the new tweet is : " + tweet.text
 		keyword = Burstiness.findTweetTopic(tweet.text)
 		book_info = self.get_quotes_by_keyword(keyword)
 		return book_info
